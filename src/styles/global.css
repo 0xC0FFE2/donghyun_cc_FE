@@ -1,0 +1,209 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Pretendard', sans-serif;
+    background-color: #f7f7f7;
+    color: #333;
+}
+
+a {
+    text-decoration: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+h1,
+h2,
+h3 {
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.bg-gray-100 {
+    background-color: #f7fafc;
+}
+
+.bg-white {
+    background-color: #ffffff;
+}
+
+.shadow {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.rounded-lg {
+    border-radius: 0.5rem;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-xl {
+    font-size: 1.25rem;
+}
+
+.text-lg {
+    font-size: 1.125rem;
+}
+
+.text-sm {
+    font-size: 0.875rem;
+}
+
+.text-gray-500 {
+    color: #a0aec0;
+}
+
+.text-gray-600 {
+    color: #718096;
+}
+
+.text-gray-900 {
+    color: #1a202c;
+}
+
+.text-blue-600 {
+    color: #3182ce;
+}
+
+.text-blue-800 {
+    color: #2c5282;
+}
+
+.mt-1 {
+    margin-top: 0.25rem;
+}
+
+.mt-2 {
+    margin-top: 0.5rem;
+}
+
+.mb-4 {
+    margin-bottom: 1rem;
+}
+
+.mb-6 {
+    margin-bottom: 1.5rem;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.flex-grow {
+    flex-grow: 1;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.p-4 {
+    padding: 1rem;
+}
+
+.py-4 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.max-w-7xl {
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.rounded-full {
+    border-radius: 9999px;
+}
+
+.w-4 {
+    width: 1rem;
+}
+
+.h-4 {
+    height: 1rem;
+}
+
+.w-10 {
+    width: 2.5rem;
+}
+
+.h-10 {
+    height: 2.5rem;
+}
+
+.w-24 {
+    width: 6rem;
+}
+
+.h-24 {
+    height: 6rem;
+}
+
+.bg-blue-500 {
+    background-color: #4299e1;
+}
+
+.text-white {
+    color: #ffffff;
+}
+
+.space-y-2>*+* {
+    margin-top: 0.5rem;
+}
+
+.space-y-4>*+* {
+    margin-top: 1rem;
+}
+
+.rounded-full {
+    border-radius: 9999px;
+}
+
+.top-header-img {
+    width: auto;
+    height: 40px;
+}
+
+.footer-wrap {
+    width: auto;    
+    height: 200px;
+}
+
+.footer-info img {
+    width: 200px;
+    height: auto;
+}
