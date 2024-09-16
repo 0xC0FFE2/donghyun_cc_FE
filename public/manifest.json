@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "동현 개발 블로그",
+  "name": "Donghyun dev Blog",
   "icons": [
     {
       "src": "favicon.svg",
@@ -8,7 +8,7 @@
       "type": "image/x-icon"
     }
   ],
-  "start_url": ".",
+  "start_url": "https://donghyun.cc",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"

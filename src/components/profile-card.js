@@ -1,26 +1,29 @@
+import profileImage from '../assets/profile.png';
 import React from 'react';
-import { User, Github } from 'lucide-react';
 
-const ProfileCard = () => {
+function ProfileCard() {
   return (
-    <div className="bg-white shadow rounded-lg mb-6">
-      <div className="p-4 flex flex-col items-center text-center">
-        <img className="h-24 w-24 rounded-full mb-4" src="/api/placeholder/150/150" alt="Profile" />
-        <h3 className="text-lg font-medium text-gray-900">이동현 LEE DONGHYUN</h3>
-        <p className="mt-1 text-sm text-gray-500">NodeJS, Devops Engineer</p>
-        <div className="mt-2 flex flex-col space-y-2">
-          <a href="mailto:leedonghyun@ncloud.sbs" className="text-blue-600 hover:text-blue-800 flex items-center justify-center">
-            <User className="w-4 h-4 mr-1" />
-            leedonghyun@ncloud.sbs
-          </a>
-          <a href="https://github.com/hy2n" className="text-blue-600 hover:text-blue-800 flex items-center justify-center">
-            <Github className="w-4 h-4 mr-1" />
-            github.com/hy2n
-          </a>
+    <>
+      <div className="bg-white flex items-center">
+        <img src={profileImage} alt="이동현" className="w-24 h-24 rounded-md mr-4" />
+        <div className="flex-1">
+          <p className="text-sm text-gray-500 mb-1">NodeJS, DevOps Engineer</p>
+          <h1 className="text-3xl font-bold text-gray-900">
+            이동현 <span className="hidden sm:inline font-normal text-gray-400">LEE DONGHYUN</span>
+          </h1>
+          <div className="flex space-x-2 mt-2">
+            <a href="mailto:leedonghyun@ncloud.sbs" className="bg-gray-100 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-200">
+              leedonghyun@ncloud.sbs
+            </a>
+            <a href="https://github.com/hy2n" className="hidden sm:inline bg-gray-100 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-200">
+              github.com/hy2n
+            </a>
+          </div>
         </div>
       </div>
-    </div>
+      <p className="mt-4 text-left text-black-600">세상에 조금이라도 도움이 되는 개발자를 꿈꾸는 학생 개발자 이동현 입니다!</p>
+    </>
   );
-};
+}
 
 export default ProfileCard;

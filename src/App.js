@@ -1,12 +1,18 @@
 import React from 'react';
-import PortfolioPage from './pages/home';
-import './styles/global.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Header from './components/Header';  // Adjust the path if necessary
+import Home from './pages/Home';            // Adjust the path if necessary
+import Articles from './pages/Articles';      // Adjust the path if necessary
 
 function App() {
   return (
-    <div>
-      <PortfolioPage />
-    </div>
+    <Router>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/Articles" element={<Articles />} />
+      </Routes>
+    </Router>
   );
 }
 
