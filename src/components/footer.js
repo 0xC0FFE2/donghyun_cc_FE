@@ -1,10 +1,10 @@
 import React from 'react';
-import DonghyunLogo from '../assets/logo_full_long.png'; // 로컬 이미지 불러오기
+import DonghyunLogo from '../assets/logo_full_long_clear.png'; // 로컬 이미지 불러오기
 
 function Footer() {
   return (
-    <footer className="bg-gray-900 text-white py-6 w-full border-t-2 border-gray-700 rounded-xl">
-      <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
+    <footer className="bg-white text-black py-6 w-full rounded-xl">
+      <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
         <div className="flex flex-col items-start text-left">
           <img src={DonghyunLogo} alt="DONGHYUN.CC" className="h-10 mb-3" />
           <p className="text-sm mb-2">

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import PostCard from './Post-card';
 
-function CategoryPosts({ posts }) {
+function CategoryPosts({ posts, viewPage }) {
   const [selectedCategory, setSelectedCategory] = useState('전체');
   const [currentPage, setCurrentPage] = useState(1);
   const categoryRef = useRef(null);
@@ -12,12 +12,12 @@ function CategoryPosts({ posts }) {
     ? posts
     : posts.filter(post => post.category === selectedCategory);
 
-  const postsPerPage = 4;
+  const postsPerPage = viewPage;
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
   const paginatedPosts = filteredPosts.slice((currentPage - 1) * postsPerPage, currentPage * postsPerPage);
 
   useEffect(() => {
-    if (categoryRef.current) {
+    if (selectedCategory !== '전체' && categoryRef.current) {
       const selectedButton = categoryRef.current.querySelector(`[data-category="${selectedCategory}"]`);
       if (selectedButton) {
         selectedButton.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });

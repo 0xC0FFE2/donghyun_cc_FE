@@ -23,7 +23,7 @@ function Profile() {
 
   return (
     <div className="container mx-auto px-4 py-1 pt-12">
-      <CategoryPosts posts={posts} />
+      <CategoryPosts posts={posts} viewPage='8' />
       <Footer />
     </div>
   );
