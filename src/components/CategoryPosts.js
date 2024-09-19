@@ -56,7 +56,7 @@ function CategoryPosts({ posts, viewPage }) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {paginatedPosts.map(post => (
-          <PostCard key={post.id} {...post} image={`https://donghyun.cc/profile.jpg?${post.title}`} />
+          <PostCard key={post.id} {...post} image={`https://nanu.cc/assets/cdn.png?${post.title}`} />
         ))}
       </div>
 
