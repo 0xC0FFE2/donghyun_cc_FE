@@ -1,5 +1,5 @@
 import React from 'react';
-import PostCard from '../components/Post-card';
+import PostCard from './Post-card';
 
 function RecentPosts({ recents }) {
   return (
