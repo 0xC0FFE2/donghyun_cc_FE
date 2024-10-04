@@ -36,7 +36,7 @@ function Profile() {
       <ProfileCard />
       <CountCard count={recents.length.toString()} />
       <RecentPosts recents={recents} />
-      <CategoryPosts posts={posts} viewPage='4' />
+      <CategoryPosts posts={posts} viewPage='8' />
     </div>
   );
 }
