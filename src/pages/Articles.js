@@ -1,5 +1,4 @@
 import React from 'react';
-import Footer from '../components/Footer';
 import CategoryPosts from '../components/CategoryPosts';
 
 function Profile() {
@@ -24,7 +23,6 @@ function Profile() {
   return (
     <div className="container mx-auto px-4 py-1 pt-12">
       <CategoryPosts posts={posts} viewPage='8' />
-      <Footer />
     </div>
   );
 }

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import MDViewer from '../components/MDviewer';
-import Footer from '../components/Footer';
 import RecentPosts from '../components/RecentPosts';
 
 const recents = [
@@ -52,7 +51,6 @@ const Posts = ({ postId }) => {
         <MDViewer content={postContent} />
       </div>
       <RecentPosts recents={recents} />
-      <Footer />
     </div>
   );
 };

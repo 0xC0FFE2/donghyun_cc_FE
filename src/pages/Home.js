@@ -1,7 +1,6 @@
 import React from 'react';
 import ProfileCard from '../components/Profile-card';
 import CountCard from '../components/Count-card';
-import Footer from '../components/Footer';
 import RecentPosts from '../components/RecentPosts';
 import CategoryPosts from '../components/CategoryPosts';
 
@@ -38,7 +37,6 @@ function Profile() {
       <CountCard count={recents.length.toString()} />
       <RecentPosts recents={recents} />
       <CategoryPosts posts={posts} viewPage='4' />
-      <Footer />
     </div>
   );
 }
