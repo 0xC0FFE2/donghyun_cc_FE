@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PostCard from './PostCard';
+import LoadingSpinner from './LoadingIcon';
 
 function RecentPosts({ size }) {
   const [recents, setRecents] = useState([]);
@@ -25,7 +26,7 @@ function RecentPosts({ size }) {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <LoadingSpinner/>;
   if (error) return <div>Error: {error}</div>;
 
   return (
