@@ -9,6 +9,8 @@
     deploy:
       runs-on: ubuntu-latest
 
+      environment: DEPLOY_ACTION
+
       steps:
       - name: node checkout하기
         uses: actions/checkout@v3
