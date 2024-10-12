@@ -1,4 +1,4 @@
-name: Deploy React App to S3
+name: Application AWS에 배포
 
 on:
   push:
@@ -23,9 +23,6 @@ jobs:
 
     - name: 리액트 빌드하기
       run: npm run build
-
-    - name: react-snap으로 빌드하기
-      run: npm run postbuild
 
     - name: s3에 배포하기
       env:
