@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import PostCard from './Post-card';
+import PostCard from './PostCard';
 
 function CategoryPosts({ posts, viewPage }) {
   const [selectedCategory, setSelectedCategory] = useState('전체');
