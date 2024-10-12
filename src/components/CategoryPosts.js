@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import PostCard from './PostCard';
 import LoadingSpinner from './LoadingIcon';
+import { API_BASE_URL } from '../__CONF__';
 
 function CategoryPosts({ size, mode }) {
   const [selectedCategory, setSelectedCategory] = useState('전체');
@@ -24,7 +25,7 @@ function CategoryPosts({ size, mode }) {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('http://localhost:5500/categories');
+      const response = await fetch(API_BASE_URL+'/categories');
       const data = await response.json();
       setCategories(['전체', ...data.map(category => category.category_name)]);
     } catch (error) {
@@ -37,9 +38,9 @@ function CategoryPosts({ size, mode }) {
     try {
       let url;
       if (selectedCategory === '전체') {
-        url = `http://localhost:5500/articles?page=${currentPage}&size=${size}`;
+        url = API_BASE_URL+`/articles?page=${currentPage}&size=${size}`;
       } else {
-        url = `http://localhost:5500/search/categories/${selectedCategory}?page=${currentPage}&size=${size}`;
+        url = API_BASE_URL+`/search/categories/${selectedCategory}?page=${currentPage}&size=${size}`;
       }
       const response = await fetch(url);
       const data = await response.json();

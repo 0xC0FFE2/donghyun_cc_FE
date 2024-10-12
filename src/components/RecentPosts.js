@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PostCard from './PostCard';
 import LoadingSpinner from './LoadingIcon';
+import { API_BASE_URL } from '../__CONF__';
 
 function RecentPosts({ size }) {
   const [recents, setRecents] = useState([]);
@@ -13,7 +14,7 @@ function RecentPosts({ size }) {
 
   const fetchRecentPosts = async () => {
     try {
-      const response = await fetch(`http://localhost:5500/articles?size=${size}&page=1`);
+      const response = await fetch(API_BASE_URL+`/articles?size=${size}&page=1`);
       if (!response.ok) {
         throw new Error('Failed to fetch recent posts');
       }

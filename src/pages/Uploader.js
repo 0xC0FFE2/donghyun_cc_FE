@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import FileInput from '../components/FileInput';
 import SubmitButton from '../components/FileUploadButton';
+import { API_BASE_URL } from '../__CONF__';
 
 const FileUploader = () => {
     const [file, setFile] = useState(null);
@@ -29,7 +30,7 @@ const FileUploader = () => {
         formData.append('file', file);
 
         try {
-            const response = await axios.post('http://localhost:5500/upload', formData, {
+            const response = await axios.post(API_BASE_URL+'/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import MDViewer from '../components/MDviewer';
 import RecentPosts from '../components/RecentPosts';
 import LoadingSpinner from '../components/LoadingIcon';
+import { API_BASE_URL } from '../__CONF__';
 
 const ArticleView = () => {
   const { id: articleId } = useParams();
@@ -20,7 +21,7 @@ const ArticleView = () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch(`http://localhost:5500/articles/${articleId}`);
+        const response = await fetch(API_BASE_URL+`/articles/${articleId}`);
         if (!response.ok) {
           if (response.status === 404) {
             throw new Error('게시물을 찾을 수 없습니다.');

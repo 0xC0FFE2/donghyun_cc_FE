@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { API_BASE_URL } from '../__CONF__';
 
 function PeopleCount() {
     const [count, setCount] = useState(0);
@@ -18,7 +19,7 @@ function PeopleCount() {
             }
         }
 
-        fetch('http://localhost:5500/blog/info')
+        fetch(API_BASE_URL+'/blog/info')
             .then(response => response.json())
             .then(data => {
                 setCount(data.blog_total_views);
