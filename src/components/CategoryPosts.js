@@ -1,19 +1,36 @@
 import React, { useState, useRef, useEffect } from 'react';
 import PostCard from './PostCard';
+import LoadingSpinner from './LoadingIcon';
 
-function CategoryPosts({ size }) {
+function CategoryPosts({ size, mode }) {
   const [selectedCategory, setSelectedCategory] = useState('전체');
   const [posts, setPosts] = useState([]);
+  const [categories, setCategories] = useState(['전체']);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
   const categoryRef = useRef(null);
 
-  const categories = ['전체', '백엔드', '프론트엔드', 'CI/CD', '개발 지식'];
+  const defaultCategories = ['전체', '백엔드', '프론트엔드', 'CI/CD', '개발 지식'];
 
   useEffect(() => {
+    if (mode === "FULL") {
+      fetchCategories();
+    } else {
+      setCategories(defaultCategories);
+    }
     fetchPosts();
-  }, [selectedCategory, currentPage]);
+  }, [selectedCategory, currentPage, mode]);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('http://localhost:5500/categories');
+      const data = await response.json();
+      setCategories(['전체', ...data.map(category => category.category_name)]);
+    } catch (error) {
+      console.error('Failed to fetch categories:', error);
+    }
+  };
 
   const fetchPosts = async () => {
     setLoading(true);
@@ -46,7 +63,7 @@ function CategoryPosts({ size }) {
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
-    setCurrentPage(1); // Reset to the first page when category changes
+    setCurrentPage(1);
   };
 
   return (
@@ -64,8 +81,8 @@ function CategoryPosts({ size }) {
               data-category={category}
               onClick={() => handleCategoryChange(category)}
               className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ${selectedCategory === category
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'bg-blue-500 text-white'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
             >
               {category}
@@ -76,7 +93,7 @@ function CategoryPosts({ size }) {
       </div>
 
       {loading ? (
-        <div>Loading...</div>
+        <LoadingSpinner/>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {posts.map(post => (
@@ -98,8 +115,8 @@ function CategoryPosts({ size }) {
             key={page}
             onClick={() => setCurrentPage(page)}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 mb-8 ${currentPage === page
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              ? 'bg-blue-500 text-white'
+              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
           >
             {page}
