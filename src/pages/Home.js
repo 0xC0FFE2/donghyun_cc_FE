@@ -11,7 +11,7 @@ function Profile() {
       <ProfileCard />
       <CountCard />
       <RecentPosts size='4' />
-      <CategoryPosts size='4' mode="AUTO" />
+      <CategoryPosts size='8' mode="AUTO" />
     </div>
   );
 }
