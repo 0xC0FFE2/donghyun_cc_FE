@@ -1,44 +1,45 @@
-  name: Application AWS에 배포
+name: Application AWS에 배포
 
-  on:
-    push:
-      branches:
-        - deploy
+on:
+  push:
+    branches:
+      - deploy
 
-  jobs:
-    deploy:
-      runs-on: ubuntu-latest
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
 
-      environment: DEPLOY_ACTION
+    environment: DEPLOY_ACTION
 
-      steps:
-      - name: node checkout하기
-        uses: actions/checkout@v3
+    steps:
+    - name: node checkout하기
+      uses: actions/checkout@v3
 
-      - name: nodejs 준비하기
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
+    - name: nodejs 준비하기
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
 
-      - name: 의존성 설치하기
-        run: npm install
+    - name: 의존성 설치하기
+      run: npm install
 
-      - name: 리액트 빌드하기
-        run: npm run build
+    - name: 리액트 빌드하기
+      run: npm run build
 
-      - name: s3에 배포하기
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }} 
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-        run: |
-          aws s3 sync build/ s3://$S3_BUCKET_NAME --acl public-read --delete --region $AWS_REGION
-      
-      - name: CloudFront 캐시 무효화 하기
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
-        run: |
-          aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
+    - name: s3에 배포하기
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }} 
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+      run: |
+        aws s3 sync build/ s3://$S3_BUCKET_NAME --acl public-read --delete --region $AWS_REGION
+    
+    - name: CloudFront 캐시 무효화 하기
+      uses: chetan/invalidate-cloudfront-action@master
+      env:
+        PATHS: '/*'
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: 'us-east-1'
+        DISTRIBUTION: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
