@@ -12,6 +12,9 @@ function ProfileCard() {
             이동현 <span className="hidden sm:inline font-normal text-gray-400">LEE DONGHYUN</span>
           </h1>
           <div className="flex space-x-2 mt-2">
+            <a href="https://me.donghyun.cc" className="bg-blue-100 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-200">
+              Portfolio
+            </a>
             <a href="mailto:leedonghyun@ncloud.sbs" className="bg-gray-100 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-200">
               leedonghyun@ncloud.sbs
             </a>

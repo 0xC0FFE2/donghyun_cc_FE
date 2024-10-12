@@ -1,6 +1,8 @@
 {
-    "title": "Dummy Dum Dummm",
-    "date": "2024-12-12",
-    "tags": ["React", "JavaScript", "Web Development"]
-  }
-  
+  "article_id": 10,
+  "article_date": "2024-10-06T23:33:57.000Z",
+  "article_name": "집가고 싶다 인생",
+  "thumbnail_url": "https://example.com/thumbnail.jpg",
+  "article_data_url": "https://example.com/article-data",
+  "article_view_mode": "PUBLIC"
+}
