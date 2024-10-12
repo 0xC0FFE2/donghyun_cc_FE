@@ -24,7 +24,7 @@ function ProfileCard() {
           </div>
         </div>
       </div>
-      <p className="mt-4 text-left text-black-600">세상에 조금이라도 도움이 되는 개발자를 꿈꾸는 학생 개발자 이동현 입니다!</p>
+      <p className="mt-4 text-left text-black-600">새로움과 편리함을 추구하는 서버 개발자 이동현 입니다!</p>
     </>
   );
 }

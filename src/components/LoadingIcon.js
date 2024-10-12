@@ -10,7 +10,7 @@ const Loader = ({ size = 'md' }) => {
   return (
     <div className="flex justify-center items-center">
       <div
-        className={`${sizeClasses[size]} border-t-blue-500 border-r-blue-500 border-b-blue-200 border-l-blue-200 rounded-full animate-spin`}
+        className={`${sizeClasses[size]} border-t-blue-500 border-r-blue-500 border-b-blue-400 border-l-blue-200 rounded-full animate-spin`}
       ></div>
     </div>
   );
@@ -20,7 +20,7 @@ export default function LoadingSpinner() {
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
       <Loader size="lg" />
-      <p className="mt-4 text-gray-600 font-medium">Loading...</p>
+      <p className="mt-4 text-gray-600 font-medium">🚗 로딩 중이에요!</p>
     </div>
   );
 }
