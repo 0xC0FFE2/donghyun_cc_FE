@@ -1,4 +1,4 @@
-name: Deploy React App to S3
+name: Application AWS에 배포
 
 on:
   push:
