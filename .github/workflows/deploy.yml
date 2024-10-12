@@ -24,9 +24,6 @@ jobs:
     - name: 리액트 빌드하기
       run: npm run build
 
-    - name: react-snap으로 빌드하기
-      run: npm run postbuild
-
     - name: s3에 배포하기
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
