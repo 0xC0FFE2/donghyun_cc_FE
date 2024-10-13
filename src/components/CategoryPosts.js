@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import PostCard from './PostCard';
 import LoadingSpinner from './LoadingIcon';
 import { API_BASE_URL } from '../__CONF__';
+import LoadingFailSpinner from './ErrorIcon';
 
 function CategoryPosts({ size, mode }) {
   const [selectedCategory, setSelectedCategory] = useState('전체');
@@ -10,6 +11,7 @@ function CategoryPosts({ size, mode }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const categoryRef = useRef(null);
 
   const defaultCategories = ['전체', '백엔드', '프론트엔드', 'CI/CD', '개발 지식'];
@@ -25,7 +27,7 @@ function CategoryPosts({ size, mode }) {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch(API_BASE_URL+'/categories');
+      const response = await fetch(API_BASE_URL + '/categories');
       const data = await response.json();
       setCategories(['전체', ...data.map(category => category.category_name)]);
     } catch (error) {
@@ -38,15 +40,16 @@ function CategoryPosts({ size, mode }) {
     try {
       let url;
       if (selectedCategory === '전체') {
-        url = API_BASE_URL+`/articles?page=${currentPage}&size=${size}`;
+        url = API_BASE_URL + `/articles?page=${currentPage}&size=${size}`;
       } else {
-        url = API_BASE_URL+`/search/categories/${selectedCategory}?page=${currentPage}&size=${size}`;
+        url = API_BASE_URL + `/search/categories/${selectedCategory}?page=${currentPage}&size=${size}`;
       }
       const response = await fetch(url);
       const data = await response.json();
       setPosts(data.articles);
       setTotalPages(data.totalPage);
     } catch (error) {
+      setError('카테고리를 불러오는 데 실패했습니다.');
       console.error('Failed to fetch posts:', error);
     } finally {
       setLoading(false);
@@ -66,6 +69,9 @@ function CategoryPosts({ size, mode }) {
     setSelectedCategory(category);
     setCurrentPage(1);
   };
+
+  if (loading) return <LoadingSpinner/>;
+  if (error) return <LoadingFailSpinner message='서버 통신 문제가 발생했어요'/>;
 
   return (
     <div>
@@ -94,7 +100,7 @@ function CategoryPosts({ size, mode }) {
       </div>
 
       {loading ? (
-        <LoadingSpinner/>
+        <LoadingSpinner />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {posts.map(post => (
