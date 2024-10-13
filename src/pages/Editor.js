@@ -11,13 +11,13 @@ const MarkdownEditor = ({ initialContent, onSave }) => {
   const [tags, setTags] = useState([]);
   const [thumbnail, setThumbnail] = useState(null);
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
-  const [URL, setURL] = useState(""); // Add URL state here
+  const [URL, setURL] = useState("");
 
   useEffect(() => {
     if (initialContent) {
       setContent(initialContent.content);
       setTitle(initialContent.title);
-      setURL(initialContent.URL); // Ensure to set the URL from initialContent
+      setURL(initialContent.URL); 
       setTags(initialContent.tags);
       setThumbnail(initialContent.thumbnail);
       setThumbnailPreview(initialContent.thumbnail ? URL.createObjectURL(initialContent.thumbnail) : null);
@@ -28,7 +28,7 @@ const MarkdownEditor = ({ initialContent, onSave }) => {
         setContent(parsedContent.content);
         setTitle(parsedContent.title);
         setTags(parsedContent.tags);
-        setURL(parsedContent.URL); // Load URL from saved draft
+        setURL(parsedContent.URL);
         if (parsedContent.thumbnail) {
           setThumbnail(parsedContent.thumbnail);
           setThumbnailPreview(URL.createObjectURL(parsedContent.thumbnail));
@@ -38,10 +38,10 @@ const MarkdownEditor = ({ initialContent, onSave }) => {
   }, [initialContent, postId]);
 
   const saveToLocalStorage = useCallback(() => {
-    const contentToSave = { content, title, tags, thumbnail, URL }; // Include URL when saving
+    const contentToSave = { content, title, tags, thumbnail, URL };
     localStorage.setItem(`draft_${postId}`, JSON.stringify(contentToSave));
     toast.info('브라우저 내에 임시 저장되었습니다.', { position: 'top-right' });
-  }, [content, title, tags, thumbnail, URL, postId]); // Include URL in dependencies
+  }, [content, title, tags, thumbnail, URL, postId]);
 
   useEffect(() => {
     const intervalId = setInterval(saveToLocalStorage, 10000);
@@ -49,7 +49,7 @@ const MarkdownEditor = ({ initialContent, onSave }) => {
   }, [saveToLocalStorage]);
 
   const handleSave = () => {
-    onSave({ content, title, tags, thumbnail, URL }); // Pass URL to onSave
+    onSave({ content, title, tags, thumbnail, URL });
     localStorage.removeItem(`draft_${postId}`);
     toast.success('저장되었습니다!', { position: 'top-right' });
   };
@@ -81,8 +81,8 @@ const MarkdownEditor = ({ initialContent, onSave }) => {
         <h1 className="pt-2 font-bold text-xl">썸네일 링크</h1>
         <input
           type="text"
-          value={URL} // Bind URL input to the state
-          onChange={(e) => setURL(e.target.value)} // Set URL on change
+          value={URL} 
+          onChange={(e) => setURL(e.target.value)}
           placeholder="썸네일 링크를 입력하세요"
           className="w-full mb-4 p-2 border rounded"
         />

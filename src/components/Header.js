@@ -10,7 +10,7 @@ function Header() {
           <img src={logo} alt="donghyun.cc" className="h-8" />
         </Link>
         <nav>
-          <Link to="/articles" className="text-white">게시물</Link>
+          <Link to="/article_list" className="text-white">게시물</Link>
         </nav>
       </div>
     </header>

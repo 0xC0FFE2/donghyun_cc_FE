@@ -1,20 +1,57 @@
 import React, { useState, useRef, useEffect } from 'react';
-import PostCard from './Post-card';
+import PostCard from './PostCard';
+import LoadingSpinner from './LoadingIcon';
+import { API_BASE_URL } from '../__CONF__';
 
-function CategoryPosts({ posts, viewPage }) {
+function CategoryPosts({ size, mode }) {
   const [selectedCategory, setSelectedCategory] = useState('전체');
+  const [posts, setPosts] = useState([]);
+  const [categories, setCategories] = useState(['전체']);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
   const categoryRef = useRef(null);
 
-  const categories = ['전체', '백엔드', '프론트엔드', 'CI/CD', '개발 지식'];
+  const defaultCategories = ['전체', '백엔드', '프론트엔드', 'CI/CD', '개발 지식'];
 
-  const filteredPosts = selectedCategory === '전체'
-    ? posts
-    : posts.filter(post => post.category === selectedCategory);
+  useEffect(() => {
+    if (mode === "FULL") {
+      fetchCategories();
+    } else {
+      setCategories(defaultCategories);
+    }
+    fetchPosts();
+  }, [selectedCategory, currentPage, mode]);
 
-  const postsPerPage = viewPage;
-  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
-  const paginatedPosts = filteredPosts.slice((currentPage - 1) * postsPerPage, currentPage * postsPerPage);
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch(API_BASE_URL+'/categories');
+      const data = await response.json();
+      setCategories(['전체', ...data.map(category => category.category_name)]);
+    } catch (error) {
+      console.error('Failed to fetch categories:', error);
+    }
+  };
+
+  const fetchPosts = async () => {
+    setLoading(true);
+    try {
+      let url;
+      if (selectedCategory === '전체') {
+        url = API_BASE_URL+`/articles?page=${currentPage}&size=${size}`;
+      } else {
+        url = API_BASE_URL+`/search/categories/${selectedCategory}?page=${currentPage}&size=${size}`;
+      }
+      const response = await fetch(url);
+      const data = await response.json();
+      setPosts(data.articles);
+      setTotalPages(data.totalPage);
+    } catch (error) {
+      console.error('Failed to fetch posts:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (selectedCategory !== '전체' && categoryRef.current) {
@@ -24,6 +61,11 @@ function CategoryPosts({ posts, viewPage }) {
       }
     }
   }, [selectedCategory]);
+
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+    setCurrentPage(1);
+  };
 
   return (
     <div>
@@ -38,10 +80,7 @@ function CategoryPosts({ posts, viewPage }) {
             <button
               key={category}
               data-category={category}
-              onClick={() => {
-                setSelectedCategory(category);
-                setCurrentPage(1); // Reset to the first page when category changes
-              }}
+              onClick={() => handleCategoryChange(category)}
               className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ${selectedCategory === category
                 ? 'bg-blue-500 text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -54,11 +93,22 @@ function CategoryPosts({ posts, viewPage }) {
         <div className="absolute left-0 right-0 bottom-0 h-0.5 bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {paginatedPosts.map(post => (
-          <PostCard key={post.id} {...post} image={`https://nanu.cc/assets/cdn.png?${post.title}`} />
-        ))}
-      </div>
+      {loading ? (
+        <LoadingSpinner/>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {posts.map(post => (
+            <PostCard
+              key={post.article_id}
+              id={post.article_id}
+              title={post.article_name}
+              date={new Date(post.article_date).toLocaleDateString('ko-KR', { year: '2-digit', month: '2-digit', day: '2-digit' })}
+              category={post.categorys[0]?.category_name || '미분류'}
+              image={post.thumbnail_url}
+            />
+          ))}
+        </div>
+      )}
 
       <div className="flex justify-center space-x-2 mt-6">
         {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
