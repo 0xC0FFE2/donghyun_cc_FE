@@ -19,7 +19,6 @@ function App() {
       <div className='App'>
         <Header />
         <Routes>
-          <Route path='/uploader' element={<FileUploader />} />
           <Route path="/" element={<Home />} />
           <Route path="/article_list" element={<Articles />} />
           <Route path="/article/:id" element={<ArticleView />} />
@@ -37,6 +36,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <AdminArticleManager />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/uploader"
+            element={
+              <ProtectedRoute>
+                <FileUploader />
               </ProtectedRoute>
             }
           />
