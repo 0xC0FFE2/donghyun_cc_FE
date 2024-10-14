@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PostCard from './PostCard';
 import LoadingSpinner from './LoadingIcon';
 import { API_BASE_URL } from '../__CONF__';
+import LoadingFailSpinner from './ErrorIcon';
 
 function RecentPosts({ size }) {
   const [recents, setRecents] = useState([]);
@@ -28,7 +29,7 @@ function RecentPosts({ size }) {
   };
 
   if (loading) return <LoadingSpinner/>;
-  if (error) return <div>Error: {error}</div>;
+  if (error) return <LoadingFailSpinner message='서버 통신 문제가 발생했어요'/>;
 
   return (
     <div>
