@@ -87,10 +87,11 @@ function CategoryPosts({ size, mode }) {
               key={category}
               data-category={category}
               onClick={() => handleCategoryChange(category)}
-              className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ${selectedCategory === category
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
+              className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ${
+                selectedCategory === category
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
             >
               {category}
             </button>
@@ -109,7 +110,7 @@ function CategoryPosts({ size, mode }) {
               id={post.article_id}
               title={post.article_name}
               date={new Date(post.article_date).toLocaleDateString('ko-KR', { year: '2-digit', month: '2-digit', day: '2-digit' })}
-              category={post.categorys[0]?.category_name || '미분류'}
+              category={post.categories[0] || '미분류'}
               image={post.thumbnail_url}
             />
           ))}
@@ -121,10 +122,11 @@ function CategoryPosts({ size, mode }) {
           <button
             key={page}
             onClick={() => setCurrentPage(page)}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 mb-8 ${currentPage === page
-              ? 'bg-blue-500 text-white'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 mb-8 ${
+              currentPage === page
+                ? 'bg-blue-500 text-white'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            }`}
           >
             {page}
           </button>

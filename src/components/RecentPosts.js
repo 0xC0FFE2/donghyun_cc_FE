@@ -41,7 +41,7 @@ function RecentPosts({ size }) {
             id={post.article_id}
             title={post.article_name}
             date={new Date(post.article_date).toLocaleDateString('ko-KR', { year: '2-digit', month: '2-digit', day: '2-digit' })}
-            category={post.categorys[0]?.category_name || '미분류'}
+            category={post.categories[0] || '미분류'}
             image={post.thumbnail_url}
           />
         ))}
