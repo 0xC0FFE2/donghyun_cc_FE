@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import FileInput from '../components/FileInput';
 import SubmitButton from '../components/FileUploadButton';
 import { API_BASE_URL } from '../__CONF__';
+import OAuthSDK from '../nanuid_auth_sdk';
 
 const FileUploader = () => {
     const [file, setFile] = useState(null);
@@ -16,6 +17,36 @@ const FileUploader = () => {
     const handleFileChange = (file) => {
         setFile(file);
     };
+
+    const verifyAndUpload = useCallback(async (formData) => {
+        try {
+            const accessToken = await OAuthSDK.checkAuthentication();
+            if (!accessToken) {
+                toast.error('세션이 만료되었습니다. 다시 로그인해 주세요.');
+                navigate('/');
+                return;
+            }
+
+            const response = await axios.post(`${API_BASE_URL}/upload`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+            });
+            setFileUrl(response.data.url);
+            toast.success('파일이 성공적으로 업로드되었습니다!');
+        } catch (error) {
+            console.error('Error uploading file:', error);
+            if (error.response && error.response.status === 401) {
+                toast.error('인증에 실패했습니다. 다시 로그인해 주세요.');
+                navigate('/');
+            } else {
+                toast.error('파일 업로드 중 오류가 발생했습니다.');
+            }
+        } finally {
+            setUploading(false);
+        }
+    }, [navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -29,20 +60,7 @@ const FileUploader = () => {
         const formData = new FormData();
         formData.append('file', file);
 
-        try {
-            const response = await axios.post(API_BASE_URL+'/upload', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            setFileUrl(response.data.url);
-            toast.success('파일이 성공적으로 업로드되었습니다!');
-        } catch (error) {
-            console.error('Error uploading file:', error);
-            toast.error('파일 업로드 중 오류가 발생했습니다.');
-        } finally {
-            setUploading(false);
-        }
+        await verifyAndUpload(formData);
     };
 
     return (

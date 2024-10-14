@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import MDEditor from '@uiw/react-md-editor';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { API_BASE_URL } from '../__CONF__';
+import OAuthSDK from '../nanuid_auth_sdk';
 
 const MarkdownEditor = ({ initialContent, onSave }) => {
   const { postId } = useParams();
+  const navigate = useNavigate();
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
   const [thumbnailURL, setThumbnailURL] = useState("");
@@ -16,6 +18,26 @@ const MarkdownEditor = ({ initialContent, onSave }) => {
   const [newCategoryName, setNewCategoryName] = useState("");
   const [fileUrl, setFileUrl] = useState("");
   const [uploading, setUploading] = useState(false);
+
+  const getAuthenticatedAxios = useCallback(async () => {
+    try {
+      const accessToken = await OAuthSDK.checkAuthentication();
+      if (!accessToken) {
+        toast.error('세션이 만료되었습니다. 다시 로그인해 주세요.');
+        navigate('/');
+        return null;
+      }
+      return axios.create({
+        baseURL: API_BASE_URL,
+        headers: { 'Authorization': `Bearer ${accessToken}` }
+      });
+    } catch (error) {
+      console.error('Authentication error:', error);
+      toast.error('인증 오류가 발생했습니다.');
+      navigate('/');
+      return null;
+    }
+  }, [navigate]);
 
   useEffect(() => {
     if (initialContent) {
@@ -37,15 +59,18 @@ const MarkdownEditor = ({ initialContent, onSave }) => {
 
   useEffect(() => {
     const fetchCategories = async () => {
+      const authAxios = await getAuthenticatedAxios();
+      if (!authAxios) return;
+
       try {
-        const response = await axios.get(API_BASE_URL+'/categories');
+        const response = await authAxios.get('/categories');
         setCategories(response.data);
       } catch (error) {
         toast.error('카테고리 목록을 불러오는 데 실패했습니다.');
       }
     };
     fetchCategories();
-  }, []);
+  }, [getAuthenticatedAxios]);
 
   const saveToLocalStorage = useCallback(() => {
     const contentToSave = { content, title, thumbnailURL, categories: selectedCategories };
@@ -55,12 +80,15 @@ const MarkdownEditor = ({ initialContent, onSave }) => {
 
   const uploadContent = async () => {
     setUploading(true);
+    const authAxios = await getAuthenticatedAxios();
+    if (!authAxios) return;
+
     const formData = new FormData();
     const blob = new Blob([content], { type: 'text/markdown' });
     formData.append('file', blob, 'content.md');
 
     try {
-      const response = await axios.post(API_BASE_URL+'/upload', formData, {
+      const response = await authAxios.post('/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -78,9 +106,12 @@ const MarkdownEditor = ({ initialContent, onSave }) => {
   };
 
   const handlePublish = async (viewMode) => {
+    const authAxios = await getAuthenticatedAxios();
+    if (!authAxios) return;
+
     try {
       const contentUrl = await uploadContent();
-      const response = await axios.post(API_BASE_URL+'/admin/articles', {
+      const response = await authAxios.post('/admin/articles', {
         article_date: new Date().toISOString(),
         article_name: title,
         thumbnail_url: thumbnailURL,
@@ -96,8 +127,8 @@ const MarkdownEditor = ({ initialContent, onSave }) => {
   };
 
   const handleCategoryToggle = (categoryId) => {
-    setSelectedCategories(prev => 
-      prev.includes(categoryId) 
+    setSelectedCategories(prev =>
+      prev.includes(categoryId)
         ? prev.filter(id => id !== categoryId)
         : [...prev, categoryId]
     );
@@ -108,8 +139,12 @@ const MarkdownEditor = ({ initialContent, onSave }) => {
       toast.error('카테고리 이름을 입력하세요.');
       return;
     }
+
+    const authAxios = await getAuthenticatedAxios();
+    if (!authAxios) return;
+
     try {
-      const response = await axios.post(API_BASE_URL+'/categories', {
+      const response = await authAxios.post('/categories', {
         category_name: newCategoryName
       });
       setCategories([...categories, response.data]);
@@ -123,9 +158,9 @@ const MarkdownEditor = ({ initialContent, onSave }) => {
   return (
     <div className="container mx-auto px-4 py-12 max-w-4xl mt-16">
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
-      
+
       <h1 className="text-3xl font-bold mb-6">게시글 작성</h1>
-      
+
       <div className="mb-6">
         <label className="block text-sm font-medium text-gray-700 mb-2">제목</label>
         <input
@@ -136,7 +171,7 @@ const MarkdownEditor = ({ initialContent, onSave }) => {
           className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
-      
+
       <div className="mb-6">
         <label className="block text-sm font-medium text-gray-700 mb-2">썸네일 URL</label>
         <input
@@ -147,7 +182,7 @@ const MarkdownEditor = ({ initialContent, onSave }) => {
           className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
-      
+
       <div className="mb-6">
         <label className="block text-sm font-medium text-gray-700 mb-2">카테고리</label>
         <div className="flex flex-wrap gap-2 mb-2">
@@ -155,11 +190,10 @@ const MarkdownEditor = ({ initialContent, onSave }) => {
             <button
               key={category.category_id}
               onClick={() => handleCategoryToggle(category.category_id)}
-              className={`px-3 py-1 rounded-full text-sm ${
-                selectedCategories.includes(category.category_id)
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-200 text-gray-700'
-              }`}
+              className={`px-3 py-1 rounded-full text-sm ${selectedCategories.includes(category.category_id)
+                ? 'bg-blue-500 text-white'
+                : 'bg-gray-200 text-gray-700'
+                }`}
             >
               {category.category_name}
             </button>
@@ -181,7 +215,7 @@ const MarkdownEditor = ({ initialContent, onSave }) => {
           </button>
         </div>
       </div>
-      
+
       <div className="mb-6">
         <label className="block text-sm font-medium text-gray-700 mb-2">내용</label>
         <MDEditor
@@ -191,7 +225,7 @@ const MarkdownEditor = ({ initialContent, onSave }) => {
           className="border border-gray-300 rounded-lg shadow-sm"
         />
       </div>
-      
+
       <div className="flex justify-between items-center">
         <button
           onClick={saveToLocalStorage}
