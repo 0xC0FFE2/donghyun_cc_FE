@@ -14,7 +14,7 @@ function CategoryPosts({ size, mode }) {
   const [error, setError] = useState(null);
   const categoryRef = useRef(null);
 
-  const defaultCategories = ['전체', '백엔드', '프론트엔드', 'CI/CD', '개발 지식'];
+  const defaultCategories = ['전체', '소프트웨어 개발 개념', '백엔드', '프론트엔드', 'CI/CD'];
 
   useEffect(() => {
     if (mode === "FULL") {
@@ -70,8 +70,8 @@ function CategoryPosts({ size, mode }) {
     setCurrentPage(1);
   };
 
-  if (loading) return <LoadingSpinner/>;
-  if (error) return <LoadingFailSpinner message='서버 통신 문제가 발생했어요'/>;
+  if (loading) return <LoadingSpinner />;
+  if (error) return <LoadingFailSpinner message='서버 통신 문제가 발생했어요' />;
 
   return (
     <div>
@@ -87,11 +87,10 @@ function CategoryPosts({ size, mode }) {
               key={category}
               data-category={category}
               onClick={() => handleCategoryChange(category)}
-              className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ${
-                selectedCategory === category
+              className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ${selectedCategory === category
                   ? 'bg-blue-500 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
+                }`}
             >
               {category}
             </button>
@@ -122,11 +121,10 @@ function CategoryPosts({ size, mode }) {
           <button
             key={page}
             onClick={() => setCurrentPage(page)}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 mb-8 ${
-              currentPage === page
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 mb-8 ${currentPage === page
                 ? 'bg-blue-500 text-white'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
+              }`}
           >
             {page}
           </button>
