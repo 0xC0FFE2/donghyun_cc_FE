@@ -18,8 +18,8 @@ function ProfileCard() {
             <a href="mailto:leedonghyun@ncloud.sbs" className="bg-gray-100 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-200">
               leedonghyun@ncloud.sbs
             </a>
-            <a href="https://github.com/hy2n" className="hidden sm:inline bg-gray-100 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-200">
-              github.com/hy2n
+            <a href="https://github.com/0xCOFFE2" className="hidden sm:inline bg-gray-100 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-200">
+              github.com/0xC0FFE2
             </a>
           </div>
         </div>
