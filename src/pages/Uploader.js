@@ -63,8 +63,25 @@ const FileUploader = () => {
         await verifyAndUpload(formData);
     };
 
+    const handlePaste = (e) => {
+        const items = e.clipboardData.items;
+
+        for (let i = 0; i < items.length; i++) {
+            if (items[i].type.startsWith('image/')) {
+                const pastedFile = items[i].getAsFile();
+                setFile(pastedFile);
+                toast.info('이미지가 클립보드에서 붙여넣기되었습니다.');
+                return;
+            }
+        }
+        toast.error('붙여넣기된 내용에 이미지가 없습니다.');
+    };
+
     return (
-        <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-16">
+        <div 
+            className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-16"
+            onPaste={handlePaste}
+        >
             <h2 className="text-2xl font-semibold text-gray-800 mb-6">파일 업로드</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <FileInput onFileChange={handleFileChange} />
